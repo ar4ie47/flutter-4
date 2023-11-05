@@ -1,18 +1,20 @@
+import 'dart:collection';
+
 import 'package:anki/component/neumorph_conteiner.dart';
 import 'package:anki/screen/folder_screen.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 import '../constant/colors.dart';
+import '../temp/items.dart';
 import '../utils/neumorph_icon.dart';
 import 'learning_page.dart';
 
 class LearningCompletedPage extends StatelessWidget {
-  String folderName;
   List<LearningCard> cards;
 
-  LearningCompletedPage(
-      {super.key, required this.cards, required this.folderName});
+  LearningCompletedPage({super.key, required this.cards});
 
   @override
   Widget build(BuildContext context) {
@@ -59,18 +61,62 @@ class LearningCompletedPage extends StatelessWidget {
                   children: [
                     NeumorphicIcon(
                         icon: const Icon(Icons.refresh),
+                        iconColor: DarkColors.redIcon,
+                        onPressed: () => retryFailCards(context)),
+                    NeumorphicIcon(
+                        icon: const Icon(Icons.refresh),
                         iconColor: DarkColors.greenIcon,
                         onPressed: () => Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    LearningPage(folderName: folderName))))
+                                    LearningPage(queueCards: getAllCards()))))
                   ],
                 )),
           ],
         ),
       )),
     );
+  }
+
+  void retryFailCards(BuildContext context) {
+    var failCards = getFailCards();
+    if (failCards.isEmpty) {
+      showMessage(context, ContentType.warning,
+          "There are no cards that you have studied", "Warn");
+    } else {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => LearningPage(queueCards: failCards)));
+    }
+  }
+
+  void showMessage(BuildContext context, ContentType contentType,
+      String message, String title) {
+    ScaffoldMessenger.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(SnackBar(
+          content: AwesomeSnackbarContent(
+              contentType: contentType, message: message, title: title),
+          backgroundColor: DarkColors.background));
+  }
+
+  ListQueue<AnkiCard> getAllCards() {
+    var list = cards
+        .map((e) => AnkiCard(word: e.word, translate: e.translate))
+        .toList();
+    list.shuffle();
+    return ListQueue.of(list);
+  }
+
+  ListQueue<AnkiCard> getFailCards() {
+    var list = cards
+        .where((e) => !e.isSuccess)
+        .map((e) => AnkiCard(word: e.word, translate: e.translate))
+        .toList();
+    list.shuffle();
+    return ListQueue.of(list);
   }
 }
 

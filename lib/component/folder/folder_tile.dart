@@ -58,7 +58,7 @@ class _FolderTileState extends State<FolderTile> {
               child: Center(
                   child: widget.isReadOnly
                       ? ListTile(
-                          contentPadding: EdgeInsets.zero,
+                          contentPadding: const EdgeInsets.only(left: 4),
                           trailing: IconButton(
                               onPressed: () {
                                 if (FolderItem.getCards(widget.text).isEmpty) {
@@ -77,7 +77,8 @@ class _FolderTileState extends State<FolderTile> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => LearningPage(
-                                              folderName: widget.text)));
+                                              queueCards: FolderItem.getQueue(
+                                                  widget.text))));
                                 }
                               },
                               icon: const Icon(Icons.play_arrow,

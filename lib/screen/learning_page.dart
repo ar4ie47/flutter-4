@@ -11,9 +11,9 @@ import 'end_learning_page.dart';
 import 'folder_screen.dart';
 
 class LearningPage extends StatefulWidget {
-  String folderName;
+  ListQueue<AnkiCard> queueCards;
 
-  LearningPage({super.key, required this.folderName});
+  LearningPage({super.key, required this.queueCards});
 
   @override
   State<LearningPage> createState() => _LearningPageState();
@@ -28,9 +28,7 @@ class _LearningPageState extends State<LearningPage> {
   void initState() {
     super.initState();
     if (_cards.isEmpty && _learningCards.isEmpty) {
-      var folderCards = FolderItem.getCards(widget.folderName);
-      folderCards.shuffle();
-      _cards = ListQueue.of(folderCards);
+      _cards = ListQueue.of(widget.queueCards);
     }
   }
 
@@ -134,8 +132,7 @@ class _LearningPageState extends State<LearningPage> {
     Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-            builder: (context) => LearningCompletedPage(
-                cards: cards, folderName: widget.folderName)),
+            builder: (context) => LearningCompletedPage(cards: cards)),
         (Route<dynamic> route) => false);
   }
 }
