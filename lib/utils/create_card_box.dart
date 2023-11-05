@@ -5,8 +5,8 @@ import '../component/neumorph_conteiner.dart';
 import '../constant/colors.dart';
 
 class AddCardBox extends StatelessWidget {
-  final wordController;
-  final translateController;
+  TextEditingController wordController;
+  TextEditingController translateController;
   VoidCallback onSave;
   VoidCallback onCancel;
 
@@ -33,6 +33,12 @@ class AddCardBox extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     TextField(
+                      onSubmitted: (value) {
+                        if (value.isNotEmpty &&
+                            translateController.text.isNotEmpty) {
+                          onSave();
+                        }
+                      },
                       autofocus: true,
                       controller: wordController,
                       textInputAction: TextInputAction.next,
@@ -47,6 +53,12 @@ class AddCardBox extends StatelessWidget {
                       endIndent: 24,
                     ),
                     TextField(
+                        onSubmitted: (value) {
+                          if (value.isNotEmpty &&
+                              wordController.text.isNotEmpty) {
+                            onSave();
+                          }
+                        },
                         controller: translateController,
                         textInputAction: TextInputAction.next,
                         textAlign: TextAlign.center,
