@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../component/neumorph_conteiner.dart';
+import 'neumorph_conteiner.dart';
 
 class NeumorphicIcon extends StatelessWidget {
   IconData icon;

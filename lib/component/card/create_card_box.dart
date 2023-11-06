@@ -1,9 +1,8 @@
-import 'package:anki/utils/button.dart';
-import 'package:anki/utils/neumorph_icon.dart';
+import 'package:anki/component/neumorph_icon.dart';
 import 'package:flutter/material.dart';
 
-import '../component/neumorph_conteiner.dart';
-import '../constant/colors.dart';
+import '../neumorph_conteiner.dart';
+import '../../constant/colors.dart';
 
 class AddCardBox extends StatelessWidget {
   TextEditingController wordController;

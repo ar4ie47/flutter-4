@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 
 import '../constant/colors.dart';
 import '../temp/items.dart';
-import '../utils/neumorph_icon.dart';
+import '../component/neumorph_icon.dart';
 import 'learning_screen.dart';
 
 class LearningCompletedPage extends StatelessWidget {

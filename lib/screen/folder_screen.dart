@@ -1,5 +1,5 @@
 import 'package:anki/temp/items.dart';
-import 'package:anki/utils/neumorph_icon.dart';
+import 'package:anki/component/neumorph_icon.dart';
 import 'package:flutter/material.dart';
 
 import '../component/folder/folder_tile.dart';

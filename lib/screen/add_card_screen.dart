@@ -1,9 +1,9 @@
 import 'package:anki/temp/items.dart';
-import 'package:anki/utils/create_card_box.dart';
+import 'package:anki/component/card/create_card_box.dart';
 import 'package:flutter/material.dart';
 
 import '../constant/colors.dart';
-import '../utils/neumorph_icon.dart';
+import '../component/neumorph_icon.dart';
 import '../component/card/card_title.dart';
 
 class CardsPage extends StatefulWidget {
