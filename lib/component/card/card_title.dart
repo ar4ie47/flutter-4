@@ -1,4 +1,4 @@
-import 'package:anki/component/card_page.dart';
+import 'package:anki/screen/add_card_screen.dart';
 import 'package:anki/temp/items.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';

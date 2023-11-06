@@ -7,7 +7,7 @@ import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/material.dart';
 
 import '../component/neumorph_conteiner.dart';
-import 'end_learning_page.dart';
+import 'end_learning_screen.dart';
 import 'folder_screen.dart';
 
 class LearningPage extends StatefulWidget {
@@ -75,36 +75,37 @@ class _LearningPageState extends State<LearningPage> {
                                 child: Center(
                                     child: Text(_cards.first.translate))),
                           ))),
-                  Expanded(
-                      flex: 40,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          NeumorphicContainer(
-                            height: 64,
-                            width: 64,
-                            borderRadius: 12,
-                            child: IconButton(
+                  Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        NeumorphicContainer(
+                          height: 64,
+                          width: 64,
+                          borderRadius: 12,
+                          child: IconButton(
+                            onPressed: () {
+                              addAndPush(context, false);
+                            },
+                            icon: const Icon(Icons.close),
+                            color: DarkColors.redIcon,
+                          ),
+                        ),
+                        NeumorphicContainer(
+                          height: 64,
+                          width: 64,
+                          borderRadius: 12,
+                          child: IconButton(
                               onPressed: () {
-                                addAndPush(context, false);
+                                addAndPush(context, true);
                               },
-                              icon: const Icon(Icons.close),
-                              color: DarkColors.redIcon,
-                            ),
-                          ),
-                          NeumorphicContainer(
-                            height: 64,
-                            width: 64,
-                            borderRadius: 12,
-                            child: IconButton(
-                                onPressed: () {
-                                  addAndPush(context, true);
-                                },
-                                icon: const Icon(Icons.navigate_next,
-                                    color: DarkColors.greenIcon)),
-                          ),
-                        ],
-                      )),
+                              icon: const Icon(Icons.navigate_next,
+                                  color: DarkColors.greenIcon)),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ))
             : const SafeArea(child: SizedBox()));

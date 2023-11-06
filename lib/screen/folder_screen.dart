@@ -1,5 +1,4 @@
 import 'package:anki/temp/items.dart';
-import 'package:anki/utils/dialog_box.dart';
 import 'package:anki/utils/neumorph_icon.dart';
 import 'package:flutter/material.dart';
 
@@ -14,17 +13,11 @@ class FolderPage extends StatefulWidget {
 }
 
 class _FolderPageState extends State<FolderPage> {
-  final _textController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     var folders = FolderItem.getFolders();
     return Scaffold(
-      appBar: AppBar(
-          backgroundColor: DarkColors.background,
-          title: Center(
-              child: Text("ANKI",
-                  style: Theme.of(context).textTheme.headlineLarge))),
+      appBar: getAppBar(context),
       body: SafeArea(
           child: Column(
         children: [
@@ -33,52 +26,43 @@ class _FolderPageState extends State<FolderPage> {
               flex: 80,
               child: ListView.builder(
                   itemCount: folders.length,
-                  itemBuilder: (BuildContext context, int index) {
+                  itemBuilder: (context, index) {
+                    var folder = folders[index];
                     return FolderTile(
-                        isReadOnly: true,
-                        text: folders[index],
-                        deletePressed: (context) {
-                          setState(() {
-                            FolderItem.remove(folders[index]);
-                          });
-                        });
+                        text: folder,
+                        isReadOnly: folder.isEmpty ? false : true,
+                        deletePressed: (action) =>
+                            setState(() => FolderItem.remove(folder)));
                   })),
-          Expanded(
-              flex: 20,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  NeumorphicIcon(
-                      icon: const Icon(Icons.add),
-                      iconColor: DarkColors.greenIcon,
-                      onPressed: () => createOrEditFolder(context))
-                ],
-              )),
+          Padding(
+            padding: const EdgeInsets.all(24),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                NeumorphicIcon(
+                    icon: Icons.add,
+                    iconColor: DarkColors.greenIcon,
+                    onPressed: addFolderTile)
+              ],
+            ),
+          ),
         ],
       )),
     );
   }
 
-  void createOrEditFolder(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return DialogBox(
-              controller: _textController,
-              onSave: () => saveFolder(context),
-              onCancel: () => cancel(context));
-        });
-  }
-
-  void cancel(BuildContext context) {
-    Navigator.of(context).pop();
-    _textController.clear();
-  }
-
-  void saveFolder(BuildContext context) {
+  void addFolderTile() {
     setState(() {
-      FolderItem.add(_textController.text, List.empty());
+      FolderItem.add("", List.empty());
     });
-    cancel(context);
+  }
+
+  AppBar getAppBar(BuildContext context) {
+    return AppBar(
+        backgroundColor: DarkColors.background,
+        title: Center(
+            child: Text("ANKI",
+                style: Theme.of(context).textTheme.headlineLarge)));
   }
 }

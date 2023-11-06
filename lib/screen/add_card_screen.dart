@@ -3,9 +3,8 @@ import 'package:anki/utils/create_card_box.dart';
 import 'package:flutter/material.dart';
 
 import '../constant/colors.dart';
-import '../utils/dialog_box.dart';
 import '../utils/neumorph_icon.dart';
-import 'card/card_title.dart';
+import '../component/card/card_title.dart';
 
 class CardsPage extends StatefulWidget {
   String folderName;
@@ -57,19 +56,20 @@ class _CardsPageState extends State<CardsPage> {
                         });
                   }),
             ),
-            Expanded(
-                flex: 40,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    NeumorphicIcon(
-                        icon: const Icon(Icons.add),
-                        iconColor: DarkColors.greenIcon,
-                        onPressed: () {
-                          createCard(context);
-                        })
-                  ],
-                ))
+            Padding(
+              padding: const EdgeInsets.all(24),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  NeumorphicIcon(
+                      icon: Icons.add,
+                      iconColor: DarkColors.greenIcon,
+                      onPressed: () {
+                        createCard(context);
+                      })
+                ],
+              ),
+            )
           ],
         )));
   }

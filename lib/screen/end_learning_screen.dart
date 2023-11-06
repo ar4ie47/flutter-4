@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import '../constant/colors.dart';
 import '../temp/items.dart';
 import '../utils/neumorph_icon.dart';
-import 'learning_page.dart';
+import 'learning_screen.dart';
 
 class LearningCompletedPage extends StatelessWidget {
   List<LearningCard> cards;
@@ -54,25 +54,26 @@ class LearningCompletedPage extends StatelessWidget {
                   child: AnkiCharts(cards: cards),
                 )),
             const Expanded(flex: 40, child: SizedBox()),
-            Expanded(
-                flex: 20,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    NeumorphicIcon(
-                        icon: const Icon(Icons.refresh),
-                        iconColor: DarkColors.redIcon,
-                        onPressed: () => retryFailCards(context)),
-                    NeumorphicIcon(
-                        icon: const Icon(Icons.refresh),
-                        iconColor: DarkColors.greenIcon,
-                        onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    LearningPage(queueCards: getAllCards()))))
-                  ],
-                )),
+            Padding(
+              padding: const EdgeInsets.all(24),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  NeumorphicIcon(
+                      icon: Icons.refresh,
+                      iconColor: DarkColors.redIcon,
+                      onPressed: () => retryFailCards(context)),
+                  NeumorphicIcon(
+                      icon: Icons.refresh,
+                      iconColor: DarkColors.greenIcon,
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  LearningPage(queueCards: getAllCards()))))
+                ],
+              ),
+            ),
           ],
         ),
       )),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../component/neumorph_conteiner.dart';
 
 class NeumorphicIcon extends StatelessWidget {
-  Icon icon;
+  IconData icon;
   Color iconColor;
   VoidCallback? onPressed;
 
@@ -19,7 +19,7 @@ class NeumorphicIcon extends StatelessWidget {
       borderRadius: 12,
       child: IconButton(
         onPressed: onPressed,
-        icon: icon,
+        icon: Icon(icon),
         color: iconColor,
       ),
     );

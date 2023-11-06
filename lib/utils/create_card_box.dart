@@ -1,4 +1,5 @@
 import 'package:anki/utils/button.dart';
+import 'package:anki/utils/neumorph_icon.dart';
 import 'package:flutter/material.dart';
 
 import '../component/neumorph_conteiner.dart';
@@ -34,7 +35,7 @@ class AddCardBox extends StatelessWidget {
                   children: [
                     TextField(
                       onSubmitted: (value) {
-                        if (value.isNotEmpty &&
+                        if (value.trim().isNotEmpty &&
                             translateController.text.isNotEmpty) {
                           onSave();
                         }
@@ -54,7 +55,7 @@ class AddCardBox extends StatelessWidget {
                     ),
                     TextField(
                         onSubmitted: (value) {
-                          if (value.isNotEmpty &&
+                          if (value.trim().isNotEmpty &&
                               wordController.text.isNotEmpty) {
                             onSave();
                           }
@@ -72,8 +73,15 @@ class AddCardBox extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      CustomButton(onPressed: onSave, text: "Add"),
-                      CustomButton(onPressed: onCancel, text: "Cancel"),
+                      NeumorphicIcon(
+                          onPressed: onSave,
+                          icon: Icons.check,
+                          iconColor: DarkColors.greenIcon),
+                      NeumorphicIcon(
+                          onPressed: onCancel,
+                          icon: Icons.close,
+                          iconColor: DarkColors.redIcon),
+                      // CustomButton(onPressed: onCancel, text: "Cancel"),
                     ],
                   ))
             ],
