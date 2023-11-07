@@ -1,21 +1,19 @@
-import 'package:anki/temp/items.dart';
 import 'package:anki/component/neumorph_icon.dart';
+import 'package:anki/model/folder.dart';
+import 'package:anki/viewmodel/folder_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../component/folder/folder_tile.dart';
 import '../constant/colors.dart';
 
-class FolderPage extends StatefulWidget {
+class FolderPage extends StatelessWidget {
   const FolderPage({super.key});
 
   @override
-  State<FolderPage> createState() => _FolderPageState();
-}
-
-class _FolderPageState extends State<FolderPage> {
-  @override
   Widget build(BuildContext context) {
-    var folders = FolderItem.getFolders();
+    var folders = context.watch<FolderViewModel>().folders;
+    var read = context.read<FolderViewModel>();
     return Scaffold(
       appBar: getAppBar(context),
       body: SafeArea(
@@ -28,11 +26,11 @@ class _FolderPageState extends State<FolderPage> {
                   itemCount: folders.length,
                   itemBuilder: (context, index) {
                     var folder = folders[index];
+                    var folderName = folder.folderName ?? "";
                     return FolderTile(
-                        text: folder,
-                        isReadOnly: folder.isEmpty ? false : true,
-                        deletePressed: (action) =>
-                            setState(() => FolderItem.remove(folder)));
+                        folderModel: folder,
+                        isReadOnly: folderName.isEmpty ? false : true,
+                        deletePressed: (action) => read.delete(folder.id!));
                   })),
           Padding(
             padding: const EdgeInsets.all(24),
@@ -43,19 +41,16 @@ class _FolderPageState extends State<FolderPage> {
                 NeumorphicIcon(
                     icon: Icons.add,
                     iconColor: DarkColors.greenIcon,
-                    onPressed: addFolderTile)
+                    onPressed: () {
+                      read.create(FolderModel(folderName: ""));
+                      // read.deleteTable();
+                    })
               ],
             ),
           ),
         ],
       )),
     );
-  }
-
-  void addFolderTile() {
-    setState(() {
-      FolderItem.add("", List.empty());
-    });
   }
 
   AppBar getAppBar(BuildContext context) {

@@ -1,4 +1,5 @@
-import 'package:anki/screen/add_card_screen.dart';
+import 'package:anki/model/card.dart';
+import 'package:anki/screen/card_screen.dart';
 import 'package:anki/temp/items.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -7,7 +8,7 @@ import '../../constant/colors.dart';
 import '../neumorph_conteiner.dart';
 
 class CardTitle extends StatelessWidget {
-  AnkiCard card;
+  CardModel card;
   SlidableActionCallback? deletePressed;
 
   CardTitle({Key? key, required this.card, this.deletePressed})

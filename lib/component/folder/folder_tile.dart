@@ -1,20 +1,22 @@
-import 'package:anki/screen/add_card_screen.dart';
-import 'package:anki/temp/items.dart';
+import 'package:anki/model/folder.dart';
+import 'package:anki/screen/card_screen.dart';
 import 'package:anki/utils/showMessage.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:provider/provider.dart';
 
 import '../../constant/colors.dart';
-import '../../screen/learning_screen.dart';
+import '../../viewmodel/folder_view_model.dart';
 import '../neumorph_conteiner.dart';
 
 class FolderTile extends StatefulWidget {
-  String text;
+  FolderModel folderModel;
   SlidableActionCallback? deletePressed;
   bool isReadOnly;
 
-  FolderTile({Key? key, required this.text, this.deletePressed, isReadOnly})
+  FolderTile(
+      {Key? key, required this.folderModel, this.deletePressed, isReadOnly})
       : isReadOnly = isReadOnly ?? true;
 
   @override
@@ -26,6 +28,8 @@ class _FolderTileState extends State<FolderTile> {
 
   @override
   Widget build(BuildContext context) {
+    var read = context.read<FolderViewModel>();
+
     return Padding(
         padding: const EdgeInsets.all(12),
         child: Slidable(
@@ -58,33 +62,33 @@ class _FolderTileState extends State<FolderTile> {
                           contentPadding: const EdgeInsets.only(left: 4),
                           trailing: IconButton(
                               onPressed: () {
-                                if (FolderItem.getCards(widget.text).isEmpty) {
-                                  showMessage(
-                                      context,
-                                      ContentType.help,
-                                      "There are no cards in the folder",
-                                      "Info");
-                                } else {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => LearningPage(
-                                              queueCards: FolderItem.getQueue(
-                                                  widget.text))));
-                                }
+                                // if () {
+                                //   showMessage(
+                                //       context,
+                                //       ContentType.help,
+                                //       "There are no cards in the folder",
+                                //       "Info");
+                                // } else {
+                                //   Navigator.push(
+                                //       context,
+                                //       MaterialPageRoute(
+                                //           builder: (context) => LearningPage(
+                                //               queueCards: FolderItem.getQueue(
+                                //                   widget.text))));
+                                // }
                               },
                               icon: const Icon(Icons.play_arrow,
                                   color: DarkColors.greenIcon)),
                           title: Text(
-                            widget.text,
+                            widget.folderModel.folderName ?? "",
                             textAlign: TextAlign.start,
                           ),
                           onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      CardsPage(folderName: widget.text)),
+                                  builder: (context) => CardPage(
+                                      folderId: widget.folderModel.id!)),
                             );
                           },
                         )
@@ -93,18 +97,26 @@ class _FolderTileState extends State<FolderTile> {
                           textAlign: TextAlign.start,
                           controller: _textController,
                           onEditingComplete: () {
-                            var newText = _textController.text;
-                            var text = widget.text;
-                            var cards = FolderItem.getCards(text);
-                            FolderItem.remove(text);
-                            FolderItem.add(newText, cards);
-                            if (newText.isEmpty) {
+                            var newFolderName = _textController.text;
+                            var isHasFolder = read.folders.any((element) =>
+                                element.folderName == newFolderName);
+
+                            if (newFolderName.isEmpty) {
                               showMessage(context, ContentType.failure,
                                   "The folder name cannot be empty", "Error");
+                            } else if (isHasFolder) {
+                              showMessage(
+                                  context,
+                                  ContentType.failure,
+                                  "A folder with the same name already exists",
+                                  "Error");
                             } else {
+                              var folderModel = widget.folderModel;
+                              folderModel.folderName = newFolderName;
+                              read.update(folderModel);
                               setState(() {
                                 widget.isReadOnly = true;
-                                widget.text = newText;
+                                widget.folderModel = folderModel;
                               });
                             }
                           },
