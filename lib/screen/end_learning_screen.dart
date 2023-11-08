@@ -1,14 +1,14 @@
 import 'dart:collection';
 
 import 'package:anki/component/neumorph_conteiner.dart';
+import 'package:anki/model/card.dart';
 import 'package:anki/screen/folder_screen.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-import '../constant/colors.dart';
-import '../temp/items.dart';
 import '../component/neumorph_icon.dart';
+import '../constant/colors.dart';
 import 'learning_screen.dart';
 
 class LearningCompletedPage extends StatelessWidget {
@@ -18,17 +18,11 @@ class LearningCompletedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var isSuccess = cards.where((element) => element.isSuccess).length;
-    var isFail = cards.where((element) => !element.isSuccess).length;
     return Scaffold(
       appBar: AppBar(
           leading: IconButton(
-              onPressed: () {
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => const FolderPage()),
-                    (Route<dynamic> route) => false);
-              },
+              onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                  context, FolderPage.route, (Route<dynamic> route) => false),
               icon: const Icon(Icons.arrow_back_rounded)),
           actions: [
             IconButton(
@@ -103,18 +97,20 @@ class LearningCompletedPage extends StatelessWidget {
           backgroundColor: DarkColors.background));
   }
 
-  ListQueue<AnkiCard> getAllCards() {
+  ListQueue<CardModel> getAllCards() {
     var list = cards
-        .map((e) => AnkiCard(word: e.word, translate: e.translate))
+        .map(
+            (e) => CardModel(word: e.word, translate: e.translate, folderId: 2))
         .toList();
     list.shuffle();
     return ListQueue.of(list);
   }
 
-  ListQueue<AnkiCard> getFailCards() {
+  ListQueue<CardModel> getFailCards() {
     var list = cards
         .where((e) => !e.isSuccess)
-        .map((e) => AnkiCard(word: e.word, translate: e.translate))
+        .map(
+            (e) => CardModel(word: e.word, translate: e.translate, folderId: 0))
         .toList();
     list.shuffle();
     return ListQueue.of(list);

@@ -9,6 +9,7 @@ import '../constant/colors.dart';
 import '../model/card.dart';
 
 class CardPage extends StatelessWidget {
+  static const String route = '/cards';
   int folderId;
 
   CardPage({Key? key, required this.folderId}) : super(key: key);
@@ -18,43 +19,43 @@ class CardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (_) => CardViewModel(),
-        builder: (context, child) {
-          var cards = context.watch<CardViewModel>().getCards(folderId);
-          var read = context.read<CardViewModel>();
-          return Scaffold(
-              appBar: getAppBar(context),
-              body: SafeArea(
-                  child: Column(
+    var cards = context.watch<CardViewModel>().getCards(folderId);
+    var read = context.read<CardViewModel>();
+
+    return Scaffold(
+        appBar: getAppBar(context),
+        body: SafeArea(
+            child: Column(
+          children: [
+            const SizedBox(height: 24),
+            Expanded(
+              flex: 80,
+              child: ListView.builder(
+                  itemCount: cards.length,
+                  itemBuilder: (context, index) {
+                    var card = cards[index];
+                    return CardTitle(
+                        card: card,
+                        deletePressed: (c) => read.delete(card.id!));
+                  }),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(24),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  const SizedBox(height: 24),
-                  Expanded(
-                    flex: 80,
-                    child: ListView.builder(
-                        itemCount: cards.length,
-                        itemBuilder: (context, index) {
-                          var card = cards[index];
-                          return CardTitle(
-                              card: card,
-                              deletePressed: (c) => read.delete(card.id!));
-                        }),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        NeumorphicIcon(
-                            icon: Icons.add,
-                            iconColor: DarkColors.greenIcon,
-                            onPressed: () => createCard(context, read))
-                      ],
-                    ),
-                  )
+                  NeumorphicIcon(
+                      icon: Icons.add,
+                      iconColor: DarkColors.greenIcon,
+                      onPressed: () => createCard(context, read))
                 ],
-              )));
-        });
+              ),
+            )
+          ],
+        )));
+    // }
+
+    // );
   }
 
   AppBar getAppBar(BuildContext context) {

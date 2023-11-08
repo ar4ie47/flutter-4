@@ -1,17 +1,18 @@
 import 'dart:collection';
 
 import 'package:anki/constant/colors.dart';
-import 'package:anki/temp/items.dart';
+import 'package:anki/model/card.dart';
+import 'package:anki/screen/folder_screen.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/material.dart';
 
 import '../component/neumorph_conteiner.dart';
 import 'end_learning_screen.dart';
-import 'folder_screen.dart';
 
 class LearningPage extends StatefulWidget {
-  ListQueue<AnkiCard> queueCards;
+  static const String route = '/learn';
+  ListQueue<CardModel> queueCards;
 
   LearningPage({super.key, required this.queueCards});
 
@@ -37,14 +38,8 @@ class _LearningPageState extends State<LearningPage> {
     return Scaffold(
         appBar: AppBar(
             leading: IconButton(
-                onPressed: () {
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const FolderPage()),
-                      (Route<dynamic> route) => false);
-                },
-                icon: Icon(Icons.arrow_back_rounded)),
+                onPressed: () => Navigator.pushNamedAndRemoveUntil(context, FolderPage.route, (Route<dynamic> route) => false),
+                icon: const Icon(Icons.arrow_back_rounded)),
             actions: [
               IconButton(
                   onPressed: () {},

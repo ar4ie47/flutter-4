@@ -1,6 +1,4 @@
 import 'package:anki/model/card.dart';
-import 'package:anki/screen/card_screen.dart';
-import 'package:anki/temp/items.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
@@ -30,7 +28,7 @@ class CardTitle extends StatelessWidget {
                       icon: Icons.delete)
                 ]),
             child: NeumorphicContainer(
-                padding: EdgeInsets.symmetric(horizontal: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 12),
                 borderRadius: 10,
                 height: 60,
                 child: Row(
@@ -44,7 +42,7 @@ class CardTitle extends StatelessWidget {
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    Text(" | "),
+                    const Text(" | "),
                     Expanded(
                       flex: 50,
                       child: Text(

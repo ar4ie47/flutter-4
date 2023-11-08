@@ -1,5 +1,6 @@
+import 'dart:collection';
+
 import 'package:anki/model/card.dart';
-import 'package:anki/repository/folder_repository.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -38,6 +39,13 @@ class CardRepository {
     //   print(row.values);
     // });
     return database;
+  }
+
+  Future<ListQueue<CardModel>> getQueue(int folderId) async {
+    var list = await getAll();
+    var result = list.where((element) => element.folderId == folderId).toList();
+    result.shuffle();
+    return ListQueue.of(result);
   }
 
   void deleteDatabase() async {

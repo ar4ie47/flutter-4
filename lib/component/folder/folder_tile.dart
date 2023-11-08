@@ -1,6 +1,7 @@
 import 'package:anki/model/folder.dart';
 import 'package:anki/screen/card_screen.dart';
 import 'package:anki/utils/showMessage.dart';
+import 'package:anki/viewmodel/card_view_model.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -13,10 +14,15 @@ import '../neumorph_conteiner.dart';
 class FolderTile extends StatefulWidget {
   FolderModel folderModel;
   SlidableActionCallback? deletePressed;
+  VoidCallback? playPressed;
   bool isReadOnly;
 
   FolderTile(
-      {Key? key, required this.folderModel, this.deletePressed, isReadOnly})
+      {Key? key,
+      required this.folderModel,
+      this.deletePressed,
+      isReadOnly,
+      this.playPressed})
       : isReadOnly = isReadOnly ?? true;
 
   @override
@@ -61,22 +67,7 @@ class _FolderTileState extends State<FolderTile> {
                       ? ListTile(
                           contentPadding: const EdgeInsets.only(left: 4),
                           trailing: IconButton(
-                              onPressed: () {
-                                // if () {
-                                //   showMessage(
-                                //       context,
-                                //       ContentType.help,
-                                //       "There are no cards in the folder",
-                                //       "Info");
-                                // } else {
-                                //   Navigator.push(
-                                //       context,
-                                //       MaterialPageRoute(
-                                //           builder: (context) => LearningPage(
-                                //               queueCards: FolderItem.getQueue(
-                                //                   widget.text))));
-                                // }
-                              },
+                              onPressed: widget.playPressed,
                               icon: const Icon(Icons.play_arrow,
                                   color: DarkColors.greenIcon)),
                           title: Text(
@@ -84,12 +75,17 @@ class _FolderTileState extends State<FolderTile> {
                             textAlign: TextAlign.start,
                           ),
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CardPage(
-                                      folderId: widget.folderModel.id!)),
-                            );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //       builder: (context) => ChangeNotifierProvider(
+                            //             builder: (context, child) => CardPage(
+                            //                 folderId: widget.folderModel.id!),
+                            //             create: (_) => CardViewModel(),
+                            //           )),
+                            // );
+                            Navigator.pushNamed(context, CardPage.route,
+                                arguments: widget.folderModel.id!);
                           },
                         )
                       : TextField(
